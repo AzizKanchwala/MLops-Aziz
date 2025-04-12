@@ -2,7 +2,21 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_instances" "ci_runner" {
+  filter {
+    name   = "tag:Name"
+    values = ["ci-runner"]
+  }
+
+  filter {
+    name   = "instance-state-name"
+    values = ["pending", "running", "stopping", "stopped"]
+  }
+}
+
 resource "aws_instance" "ci_runner" {
+  count = length(data.aws_instances.ci_runner.ids) == 0 ? 1 : 0
+
   ami                    = var.ami_id
   instance_type          = var.instance_type
   key_name               = var.key_name
@@ -18,5 +32,6 @@ resource "aws_instance" "ci_runner" {
 }
 
 output "public_ip" {
-  value = aws_instance.ci_runner.public_ip
+  value = aws_instance.ci_runner[0].public_ip
 }
+
