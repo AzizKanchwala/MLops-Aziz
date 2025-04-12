@@ -105,6 +105,12 @@ jobs:
           sudo apt update
           sudo apt install -y ansible
 
+      - name: Save SSH private key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > mlproj-key.pem
+          chmod 400 mlproj-key.pem
+
+
       - name: Run Ansible Playbook
         run: |
           cd ansible
