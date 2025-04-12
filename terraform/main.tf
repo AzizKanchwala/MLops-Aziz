@@ -6,8 +6,11 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet" "default" {
-  id = data.aws_vpc.default.id
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 resource "aws_security_group" "default" {
@@ -46,7 +49,7 @@ resource "aws_instance" "ci_runner" {
 
   ami                    = var.ami_id
   instance_type          = var.instance_type
-  subnet_id              = data.aws_subnet.default.id
+  subnet_id              = data.aws_subnets.default.ids[0]
   key_name               = var.key_name
   security_groups        = [aws_security_group.default.name]
   associate_public_ip_address = true
