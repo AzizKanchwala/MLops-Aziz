@@ -1,0 +1,5 @@
+ami_id           = "ami-084568db4383264d4"
+aws_region       = "us-east-1"
+instance_type    = "t2.micro"
+key_name         = "mlproj-key"
+private_key_path = "./mlproj-key.pem"

@@ -3,3 +3,4 @@ mlops/*
 __pycache__/
 artifacts/*
 logs/*
+*.pem
