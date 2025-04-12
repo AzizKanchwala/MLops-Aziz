@@ -1,0 +1,73 @@
+---
+- name: Setup ci-runner instance
+  hosts: ci-runner
+  become: yes
+  vars:
+    github_repo_url: "https://github.com/AzizKanchwala/MLops-Aziz"
+    runner_version: "2.323.0"
+    runner_token: "AQ7AZ3HUOAV574Q452AAXO3H7JQWM"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+        force_apt_get: yes
+
+    - name: Download Docker install script
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+        mode: '0755'
+
+    - name: Run Docker install script
+      command: sh /tmp/get-docker.sh
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Create actions-runner directory
+      become_user: ubuntu
+      file:
+        path: /home/ubuntu/actions-runner
+        state: directory
+
+    - name: Download GitHub runner package
+      become_user: ubuntu
+      get_url:
+        url: "https://github.com/actions/runner/releases/download/v{{ runner_version }}/actions-runner-linux-x64-{{ runner_version }}.tar.gz"
+        dest: "/home/ubuntu/actions-runner/runner.tar.gz"
+
+    - name: Verify tarball hash
+      become_user: ubuntu
+      shell: |
+        echo "0dbc9bf5a58620fc52cb6cc0448abcca964a8d74b5f39773b7afcad9ab691e19  runner.tar.gz" | sha256sum -c -
+      args:
+        chdir: /home/ubuntu/actions-runner
+
+    - name: Extract GitHub runner
+      become_user: ubuntu
+      unarchive:
+        src: "/home/ubuntu/actions-runner/runner.tar.gz"
+        dest: "/home/ubuntu/actions-runner/"
+        remote_src: yes
+
+    - name: Configure GitHub self-hosted runner
+      become_user: ubuntu
+      shell: |
+        ./config.sh --url {{ github_repo_url }} --token {{ runner_token }} --unattended
+      args:
+        chdir: /home/ubuntu/actions-runner
+
+    - name: Start GitHub runner
+      become_user: ubuntu
+      shell: ./run.sh
+      args:
+        chdir: /home/ubuntu/actions-runner
