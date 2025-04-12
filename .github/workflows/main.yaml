@@ -83,11 +83,11 @@ jobs:
 
           if [ -n "$INSTANCE_EXISTS" ]; then
             echo "INSTANCE WITH TAG 'ci-runner' ALREADY EXISTS. SKIP PROVISIONING."
-            exit 0
+            terraform output -raw ci_runner_public_ip > ../ansible/ec2_ip.txt
           else
             terraform apply -auto-approve
+            terraform output -raw ci_runner_public_ip > ../ansible/ec2_ip.txt
           fi
-          terraform output -raw ci_runner_public_ip > ../ansible/ec2_ip.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
