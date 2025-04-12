@@ -3,7 +3,7 @@ from mlProject.components.data_transformation import DataTransformation
 from mlProject import logger
 from pathlib import Path
 
-STAGE_NAME = "Data Validation Stage"
+STAGE_NAME = "Data Transformation Stage"
 class DataTransformationTrainingPipeline:
     def __init__(self):
         pass
