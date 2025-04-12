@@ -82,7 +82,7 @@ jobs:
           --output text)
 
           if [ -n "$INSTANCE_EXISTS" ]; then
-            echo "INSTANCE WITH TAG `ci-runner` ALREADY EXISTS. SKIP PROVISIONING."
+            echo "INSTANCE WITH TAG 'ci-runner' ALREADY EXISTS. SKIP PROVISIONING."
             exit 0
           else
             terraform apply -auto-approve
