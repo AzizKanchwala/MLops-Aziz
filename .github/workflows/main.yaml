@@ -91,7 +91,7 @@ jobs:
               --output text)
             
             echo "[ci-runner]" > ../ansible/ec2_ip.txt
-            echo "$PUBLIC_IP" >> ../ansible/ec2_ip.txt
+            terraform output -raw public_ip >> ../ansible/ec2_ip.txt
             cat ../ansible/ec2_ip.txt
           else
             terraform apply -auto-approve
