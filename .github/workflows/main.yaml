@@ -118,7 +118,7 @@ jobs:
         run: |
           cd ansible
           chmod 400 ../mlproj-key.pem
-          ansible-playbook playbook.yaml -i ec2_ip.txt -u ubuntu --private-key ../mlproj-key.pem
+          ansible-playbook playbook.yaml -i ec2_ip.txt -u ubuntu --private-key ../mlproj-key.pem -vvvv
   
 
           
