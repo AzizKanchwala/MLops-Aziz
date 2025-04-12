@@ -35,3 +35,4 @@ output "public_ip" {
   value = aws_instance.ci_runner[0].public_ip
 }
 
+
