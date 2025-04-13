@@ -119,7 +119,7 @@ jobs:
         run: |
           cd ansible
           chmod 400 ../mlproj-key.pem
-          ansible all -i ec2_ip.ini -u ubuntu --private-key ../mlproj-key.pem -m ping -vvvv
+          ansible all -i ec2_ip.ini ansible_user=ubuntu --private-key ../mlproj-key.pem -m ping -vvvv
   
 
           
