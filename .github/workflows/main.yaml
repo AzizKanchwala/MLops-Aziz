@@ -92,6 +92,8 @@ jobs:
             
             echo "Running skip block"
             echo $PUBLIC_IP
+            echo "[ci-runner]" > ../ansible/ec2_ip.txt
+            echo $PUBLIC_IP >> ../ansible/ec2_ip.txt
             cat ../ansible/ec2_ip.txt
           else
             terraform apply -auto-approve
