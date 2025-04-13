@@ -76,23 +76,23 @@ jobs:
           terraform init
 
           INSTANCE_EXISTS=$(aws ec2 describe-instances \
-          --filters "Name=tag:Name,Values=ci-runner" \
+          --filters "Name=tag:Name,Values=cirunner" \
           "Name=instance-state-name,Values=running,pending" \
           --query "Reservations[*].Instances[*].InstanceId" \
           --output text)
 
           if [ -n "$INSTANCE_EXISTS" ]; then
-            echo "INSTANCE WITH TAG 'ci-runner' ALREADY EXISTS. SKIP PROVISIONING."
+            echo "INSTANCE WITH TAG 'cirunner' ALREADY EXISTS. SKIP PROVISIONING."
             
             PUBLIC_IP=$(aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=ci-runner" \
+            --filters "Name=tag:Name,Values=cirunner" \
                   "Name=instance-state-name,Values=running" \
               --query "Reservations[0].Instances[0].PublicIpAddress" \
               --output text)
             
             echo "Running skip block"
             echo $PUBLIC_IP
-            echo "[ci-runner]" > ../ansible/ec2_ip.txt
+            echo "[cirunner]" > ../ansible/ec2_ip.txt
             echo $PUBLIC_IP >> ../ansible/ec2_ip.txt
             cat ../ansible/ec2_ip.txt
           else
@@ -113,12 +113,12 @@ jobs:
       - name: Save SSH private key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > mlproj-key.pem
-          chmod 600 mlproj-key.pem
+          chmod 400 mlproj-key.pem
           
       - name: Run Ansible Playbook
         run: |
           cd ansible
-          chmod 600 ../mlproj-key.pem
+          chmod 400 ../mlproj-key.pem
           ansible all -i ec2_ip.txt -u ubuntu --private-key ../mlproj-key.pem -m ping -vvvv
   
 
