@@ -90,7 +90,7 @@ jobs:
               --query "Reservations[0].Instances[0].PublicIpAddress" \
               --output text)
             
-            ehco "Running skip block"
+            echo "Running skip block"
             echo "[ci-runner]" > ../ansible/ec2_ip.txt
             echo $(terraform output -raw public_ip)
             # terraform output -raw public_ip >> ../ansible/ec2_ip.txt
