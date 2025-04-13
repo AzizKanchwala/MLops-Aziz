@@ -1,6 +1,7 @@
 provider "aws" {
   region = var.aws_region
 }
+
 data "aws_instances" "ci_runner" {
   filter {
     name   = "tag:Name"
@@ -24,6 +25,13 @@ resource "aws_instance" "ci_runner" {
   tags = {
     Name = "ci-runner"
   }
+
+  provisioner "local-exec" {
+  command = <<EOT
+    echo "[ci-runner]" > ../ansible/ec2_ip.txt
+    echo ${self.public_ip} >> ../ansible/ec2_ip.txt
+  EOT
+}
 }
 
 output "public_ip" {
