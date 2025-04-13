@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_instances" "ci_runner" {
   filter {
     name   = "tag:Name"
-    values = ["ci-runner"]
+    values = ["cirunner"]
   }
 
   filter {
@@ -23,7 +23,7 @@ resource "aws_instance" "ci_runner" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "ci-runner"
+    Name = "cirunner"
   }
 
   provisioner "local-exec" {
