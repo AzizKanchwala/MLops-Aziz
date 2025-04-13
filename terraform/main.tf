@@ -28,8 +28,8 @@ resource "aws_instance" "ci_runner" {
 
   provisioner "local-exec" {
   command = <<EOT
-    echo "[cirunner]" > ../ansible/ec2_ip.txt
-    echo ${self.public_ip} >> ../ansible/ec2_ip.txt
+    echo "[cirunner]" > ../ansible/ec2_ip.ini
+    echo ${self.public_ip} >> ../ansible/ec2_ip.ini
   EOT
 }
 }
