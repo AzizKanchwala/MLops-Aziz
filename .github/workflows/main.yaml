@@ -103,21 +103,21 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      # - name: Install Ansible
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install -y ansible
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
 
       - name: Save SSH private key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > mlproj-key.pem
           chmod 400 mlproj-key.pem
           
-      # - name: Run Ansible Playbook
-      #   run: |
-      #     cd ansible
-      #     chmod 400 ../mlproj-key.pem
-      #     ansible-playbook playbook.yaml -i ec2_ip.txt -u ubuntu --private-key ../mlproj-key.pem -vvvv
+      - name: Run Ansible Playbook
+        run: |
+          cd ansible
+          chmod 400 ../mlproj-key.pem
+          ansible-playbook playbook.yaml -i ec2_ip.txt -u ubuntu --private-key ../mlproj-key.pem -vvvv
   
 
           
